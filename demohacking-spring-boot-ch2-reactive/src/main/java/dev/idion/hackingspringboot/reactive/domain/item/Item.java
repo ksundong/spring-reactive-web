@@ -1,4 +1,4 @@
-package dev.idion.hackingspringboot.reactive.domain;
+package dev.idion.hackingspringboot.reactive.domain.item;
 
 import java.util.Objects;
 import org.springframework.data.annotation.Id;

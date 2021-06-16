@@ -1,5 +1,6 @@
-package dev.idion.hackingspringboot.reactive.domain;
+package dev.idion.hackingspringboot.reactive.domain.cart;
 
+import dev.idion.hackingspringboot.reactive.domain.cartitem.CartItem;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
