@@ -10,7 +10,7 @@ public class CartItem {
 
   private CartItem() {}
 
-  CartItem(Item item) {
+  public CartItem(Item item) {
     this.item = item;
     this.quantity = 1;
   }
