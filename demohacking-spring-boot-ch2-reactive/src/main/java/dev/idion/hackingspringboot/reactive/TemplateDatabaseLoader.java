@@ -1,19 +1,19 @@
 package dev.idion.hackingspringboot.reactive;
 
 import dev.idion.hackingspringboot.reactive.domain.item.Item;
-import dev.idion.hackingspringboot.reactive.domain.item.repository.BlockingItemRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.stereotype.Component;
 
 @Component
-public class RepositoryDatabaseLoader {
+public class TemplateDatabaseLoader {
 
   @Bean
-  CommandLineRunner initialize(BlockingItemRepository repository) {
+  CommandLineRunner initialize(MongoOperations mongo) {
     return args -> {
-      repository.save(new Item("Alf alarm clock", 19.99));
-      repository.save(new Item("Smurf TV tray", 24.99));
+      mongo.save(new Item("Alf alarm clock", 19.99));
+      mongo.save(new Item("Smurf TV tray", 24.99));
     };
   }
 }
