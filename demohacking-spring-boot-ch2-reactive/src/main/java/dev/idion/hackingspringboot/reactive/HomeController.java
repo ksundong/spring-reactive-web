@@ -1,8 +1,8 @@
 package dev.idion.hackingspringboot.reactive;
 
+import dev.idion.hackingspringboot.reactive.domain.CartService;
 import dev.idion.hackingspringboot.reactive.domain.cart.Cart;
 import dev.idion.hackingspringboot.reactive.domain.cart.repository.CartRepository;
-import dev.idion.hackingspringboot.reactive.domain.cartitem.CartItem;
 import dev.idion.hackingspringboot.reactive.domain.item.repository.ItemRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,10 +15,12 @@ import reactor.core.publisher.Mono;
 public class HomeController {
 
   private static final String CART_ID = "My Cart";
+  private final CartService cartService;
   private final ItemRepository itemRepository;
   private final CartRepository cartRepository;
 
-  public HomeController(ItemRepository itemRepository, CartRepository cartRepository) {
+  public HomeController(CartService cartService, ItemRepository itemRepository, CartRepository cartRepository) {
+    this.cartService = cartService;
     this.itemRepository = itemRepository;
     this.cartRepository = cartRepository;
   }
@@ -35,23 +37,7 @@ public class HomeController {
 
   @PostMapping("/add/{id}")
   public Mono<String> addToCart(@PathVariable String id) {
-    return this.cartRepository.findById(CART_ID)
-        .defaultIfEmpty(new Cart(CART_ID))
-        .flatMap(cart -> cart.getCartItems().stream()
-            .filter(cartItem -> cartItem.getItem()
-                .getId().equals(id))
-            .findAny()
-            .map(cartItem -> {
-              cartItem.increment();
-              return Mono.just(cart);
-            })
-            .orElseGet(() -> this.itemRepository.findById(id)
-                .map(CartItem::new)
-                .map(cartItem -> {
-                  cart.getCartItems().add(cartItem);
-                  return cart;
-                }))
-        ).flatMap(this.cartRepository::save)
+    return cartService.addToCart(CART_ID, id)
         .thenReturn("redirect:/");
   }
 }
