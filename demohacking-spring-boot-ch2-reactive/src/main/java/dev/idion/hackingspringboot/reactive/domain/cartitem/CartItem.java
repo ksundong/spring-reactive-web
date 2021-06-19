@@ -31,6 +31,10 @@ public class CartItem {
     this.quantity = quantity;
   }
 
+  public void increment() {
+    quantity += 1;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {
