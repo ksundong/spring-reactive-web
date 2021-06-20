@@ -17,7 +17,7 @@ public class Cart {
     this(id, new ArrayList<>());
   }
 
-  public Cart(String id, ArrayList<CartItem> cartItems) {
+  public Cart(String id, List<CartItem> cartItems) {
     this.id = id;
     this.cartItems = cartItems;
   }
