@@ -24,9 +24,11 @@ class InventoryServiceUnitTest {
 
   InventoryService inventoryService;
 
-  @MockBean private ItemRepository itemRepository;
+  @MockBean
+  private ItemRepository itemRepository;
 
-  @MockBean private CartRepository cartRepository;
+  @MockBean
+  private CartRepository cartRepository;
 
   @BeforeEach
   void setUp() {
@@ -47,6 +49,7 @@ class InventoryServiceUnitTest {
   void addItemToEmptyCartShouldProduceOneCartItem() {
     inventoryService.addItemToCart("My Cart", "item1")
         .as(StepVerifier::create)
+        .expectSubscriptionMatches(subscription -> true)
         .expectNextMatches(cart -> {
           assertThat(cart.getCartItems()).extracting(CartItem::getQuantity)
               .containsExactlyInAnyOrder(1);
