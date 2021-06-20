@@ -1,4 +1,4 @@
-package dev.idion.hackingspringboot.reactive.domain;
+package dev.idion.hackingspringboot.reactive.domain.cart.service;
 
 import dev.idion.hackingspringboot.reactive.domain.cart.Cart;
 import dev.idion.hackingspringboot.reactive.domain.cart.repository.CartRepository;
