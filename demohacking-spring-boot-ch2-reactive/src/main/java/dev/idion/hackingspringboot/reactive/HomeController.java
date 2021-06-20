@@ -2,7 +2,6 @@ package dev.idion.hackingspringboot.reactive;
 
 import dev.idion.hackingspringboot.reactive.domain.cart.Cart;
 import dev.idion.hackingspringboot.reactive.domain.cart.repository.CartRepository;
-import dev.idion.hackingspringboot.reactive.domain.cart.service.CartService;
 import dev.idion.hackingspringboot.reactive.domain.item.repository.ItemRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,14 +15,12 @@ import reactor.core.publisher.Mono;
 public class HomeController {
 
   private static final String CART_ID = "My Cart";
-  private final CartService cartService;
   private final ItemRepository itemRepository;
   private final CartRepository cartRepository;
   private final InventoryService inventoryService;
 
-  public HomeController(CartService cartService, ItemRepository itemRepository, CartRepository cartRepository,
+  public HomeController(ItemRepository itemRepository, CartRepository cartRepository,
       InventoryService inventoryService) {
-    this.cartService = cartService;
     this.itemRepository = itemRepository;
     this.cartRepository = cartRepository;
     this.inventoryService = inventoryService;
@@ -39,9 +36,9 @@ public class HomeController {
     );
   }
 
-  @PostMapping("/add/{id}")
-  public Mono<String> addToCart(@PathVariable String id) {
-    return cartService.addToCart(CART_ID, id)
+  @PostMapping("/add/{itemId}")
+  public Mono<String> addToCart(@PathVariable String itemId) {
+    return inventoryService.addItemToCart(CART_ID, itemId)
         .thenReturn("redirect:/");
   }
 

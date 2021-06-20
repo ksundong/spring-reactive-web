@@ -1,9 +1,9 @@
 package dev.idion.hackingspringboot.reactive;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static reactor.core.publisher.Mono.when;
+import static org.mockito.Mockito.when;
 
 import dev.idion.hackingspringboot.reactive.domain.cart.Cart;
 import dev.idion.hackingspringboot.reactive.domain.cart.repository.CartRepository;
@@ -12,10 +12,12 @@ import dev.idion.hackingspringboot.reactive.domain.item.Item;
 import dev.idion.hackingspringboot.reactive.domain.item.repository.ItemRepository;
 import java.util.Collections;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 @ExtendWith(SpringExtension.class)
 class InventoryServiceUnitTest {
@@ -39,5 +41,21 @@ class InventoryServiceUnitTest {
     when(cartRepository.save(any(Cart.class))).thenReturn(Mono.just(sampleCart));
 
     inventoryService = new InventoryService(itemRepository, cartRepository);
+  }
+
+  @Test
+  void addItemToEmptyCartShouldProduceOneCartItem() {
+    inventoryService.addItemToCart("My Cart", "item1")
+        .as(StepVerifier::create)
+        .expectNextMatches(cart -> {
+          assertThat(cart.getCartItems()).extracting(CartItem::getQuantity)
+              .containsExactlyInAnyOrder(1);
+
+          assertThat(cart.getCartItems()).extracting(CartItem::getItem)
+              .containsExactly(new Item("item1", "TV tray", "Alf TV tray", 19.99));
+
+          return true;
+        })
+        .verifyComplete();
   }
 }
