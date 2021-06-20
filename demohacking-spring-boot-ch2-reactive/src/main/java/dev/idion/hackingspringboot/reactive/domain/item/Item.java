@@ -2,6 +2,7 @@ package dev.idion.hackingspringboot.reactive.domain.item;
 
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.StringJoiner;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.geo.Point;
 
@@ -24,6 +25,13 @@ public class Item {
   }
 
   public Item(String name, String description, double price) {
+    this.name = name;
+    this.description = description;
+    this.price = price;
+  }
+
+  public Item(String id, String name, String description, double price) {
+    this.id = id;
     this.name = name;
     this.description = description;
     this.price = price;
@@ -87,6 +95,16 @@ public class Item {
 
   public void setLocation(Point location) {
     this.location = location;
+  }
+
+  @Override
+  public String toString() {
+    return new StringJoiner(", ", Item.class.getSimpleName() + "[", "]")
+        .add("id='" + id + "'")
+        .add("name='" + name + "'")
+        .add("description='" + description + "'")
+        .add("price=" + price)
+        .toString();
   }
 
   @Override
