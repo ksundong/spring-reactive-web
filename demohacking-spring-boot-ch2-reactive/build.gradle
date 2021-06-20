@@ -18,6 +18,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-webflux'
     implementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo'
     implementation 'org.mongodb:mongodb-driver-sync'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'io.projectreactor:reactor-test'
 }
